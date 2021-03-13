@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { fetchProductDetails } from "../actions";
@@ -10,10 +10,17 @@ import Message from "../components/Message";
 import Rating from "../components/Rating";
 
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
 
     const id = match.params.id;
     const dispatch = useDispatch();
+    const [qty, setQty] = useState(1);
+
+    // addToCard used when press add to card button
+    const addToCart = (e) => {
+        console.log(id, qty);
+        history.push(`/cart/${id}?qty=${qty}`)
+    }
 
 
     useEffect(() => {
@@ -62,16 +69,49 @@ const ProductScreen = ({ match }) => {
                                                     <Col>${product.price}</Col>
                                                 </Row>
                                             </ListGroup.Item>
+
                                             <ListGroup.Item>
                                                 <Row>
                                                     <Col>Status:</Col>
                                                     <Col>{product.countInStock > 0 ? "In Stock" : "Out of Stock"}</Col>
                                                 </Row>
                                             </ListGroup.Item>
+
+                                            {product.countInStock > 0 &&
+                                                (<ListGroup.Item>
+                                                    <Row>
+                                                        <Col>Qty:</Col>
+                                                        <Col sm="auto">
+                                                            <Form.Control as="select"
+                                                                value={qty}
+                                                                onChange={(e) => {
+                                                                    console.log(e.target);
+                                                                    setQty(e.target.value)
+                                                                }
+                                                                }
+                                                            >
+
+                                                                {
+                                                                    [...Array(product.countInStock).keys()].map((x) => (
+                                                                        <option key={x + 1} value={x + 1}>
+                                                                            {x + 1}
+                                                                        </option>
+                                                                    ))
+                                                                }
+
+                                                            </Form.Control>
+                                                        </Col>
+                                                    </Row>
+                                                </ListGroup.Item>)
+
+
+                                            }
+
+
                                             <ListGroup.Item>
-                                                <Button className="btn-block" type="button" disabled={product.countInStock === 0}>
+                                                <Button className="btn-block" type="button" disabled={product.countInStock === 0} onClick={addToCart}>
                                                     Add To Cart
-                                </Button>
+                                                 </Button>
                                             </ListGroup.Item>
 
 

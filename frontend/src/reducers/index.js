@@ -1,7 +1,6 @@
 import { PRODUCTS_FETCH_REQUEST, PRODUCTS_FETCH_SUCCESS, PRODUCTS_FETCH_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL } from "../constants/ProductConstants";
 
 export const productsReducers = (state = { products: [] }, action) => {
-    console.log(action.type);
 
     switch (action.type) {
         case PRODUCTS_FETCH_REQUEST:
@@ -17,7 +16,6 @@ export const productsReducers = (state = { products: [] }, action) => {
 }
 
 export const selectedProductReducer = (state = { products: {} }, action) => {
-    console.log(action.type);
 
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:

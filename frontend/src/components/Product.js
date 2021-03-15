@@ -21,7 +21,7 @@ const Product = ({ product }) => {
 
                 <Card.Text as="div">
                     <div className="my-3">
-                        <Rating value={product.rating} numOfReviews={product.numReviews} />
+                        <Rating value={parseFloat(product.rating)} numOfReviews={parseInt(product.numReviews)} />
                     </div>
                 </Card.Text>
                 <Card.Text as="h3">

@@ -19,10 +19,6 @@ const HomeScreen = () => {
 
     const { loading, products, error } = useSelector(state => state.products);
 
-    console.log(loading);
-    console.log(products);
-    console.log(error);
-
 
     return (
 

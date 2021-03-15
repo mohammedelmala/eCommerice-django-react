@@ -18,7 +18,6 @@ const ProductScreen = ({ match, history }) => {
 
     // addToCard used when press add to card button
     const addToCart = (e) => {
-        console.log(id, qty);
         history.push(`/cart/${id}?qty=${qty}`)
     }
 
@@ -50,7 +49,7 @@ const ProductScreen = ({ match, history }) => {
                                             <h3>{product.name}</h3>
                                         </ListGroup.Item>
                                         <ListGroup.Item>
-                                            <Rating value={product.rating} numOfReviews={product.numReviews} />
+                                            <Rating value={parseFloat(product.rating)} numOfReviews={parseInt(product.numReviews)} />
                                         </ListGroup.Item>
                                         <ListGroup.Item >
                                             Price:<strong className="p-2">${product.price}</strong>

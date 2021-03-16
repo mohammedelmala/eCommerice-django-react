@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Row, Col, ListGroup, Image, Button } from "react-bootstrap";
+import { Card, Form, Row, Col, ListGroup, Image, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
 
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
 const CartScreen = ({ match, location, history }) => {
+
+
 
     const productId = match.params.id;
     const qty = location.search ? location.search.split("=")[1] : 1;
@@ -15,6 +17,16 @@ const CartScreen = ({ match, location, history }) => {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
     const { cartItems } = cart;
+
+    const removeFromCartHandler = (id) => {
+        console.log(`remove from cart item ${id}`);
+        dispatch(removeFromCart(id));
+    }
+
+    const checkoutHandler = () => {
+        console.log("Checkout Handler");
+        history.push("/login?redirect=shipping")
+    }
 
     console.log(cart);
 
@@ -66,7 +78,7 @@ const CartScreen = ({ match, location, history }) => {
                                                     </Form.Control>
                                                 </Col>
                                                 <Col md={1}>
-                                                    <Button variant="light">
+                                                    <Button variant="light" onClick={() => removeFromCartHandler(item.product)}>
                                                         <i className="fas fa-trash" ></i>
                                                     </Button>
                                                 </Col>
@@ -78,9 +90,24 @@ const CartScreen = ({ match, location, history }) => {
                     }
                 </Col>
                 <Col md={4}>
+                    <Card className="flush">
+                        <ListGroup>
+                            <ListGroup.Item>
+                                <h4>Total :  {cartItems.reduce((total, item) => total + parseInt(item.qty), 0)}</h4>
+                                <h4>Amount: ${cartItems.reduce((total, item) => total + Number(item.qty * item.price), 0)}</h4>
+                            </ListGroup.Item>
+
+                            <ListGroup.Item>
+                                <Button className="btn-block" type="button" disabled={cartItems.length === 0} onClick={checkoutHandler}>
+                                    Processd To Checkout
+                                </Button>
+                            </ListGroup.Item>
+
+                        </ListGroup>
+                    </Card>
                 </Col>
             </Row>
-        </div>
+        </div >
     )
 }
 

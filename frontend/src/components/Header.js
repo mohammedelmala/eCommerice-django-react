@@ -6,7 +6,8 @@ import { LinkContainer } from "react-router-bootstrap";
 const Header = () => {
     return (
         <header>
-            <Navbar bg="darks" expand="lg">
+            <Navbar bg="dark" expand="lg">
+
                 <Container>
                     <LinkContainer to="/">
                         <Navbar.Brand>ProShop</Navbar.Brand>
@@ -15,7 +16,7 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
 
-                        <Nav className="ml-auto">
+                        <Nav className="ml-auto" >
                             <LinkContainer to="/cart">
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>

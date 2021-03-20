@@ -4,24 +4,36 @@ import thunk from "redux-thunk";
 
 import { productsReducers, selectedProductReducer } from "./reducers";
 import { cartReducer } from "./reducers/CartReducer";
-import { userLoginReducer } from "./reducers/UserReducers";
+import { userLoginReducer, userRegisterReducer, userDetailsReducer } from "./reducers/UserReducers";
+
 const reducers = combineReducers({
     products: productsReducers,
     selectedProduct: selectedProductReducer,
     cart: cartReducer,
-    userLogin: userLoginReducer
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userDetails: userDetailsReducer
 });
 
 const cartItemsFromLocalStorage = localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []
 
 const getUserInfoFromStorage = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null
 
+const getShippingAddressFromStorage = localStorage.getItem("shippingAddress") ? JSON.parse(localStorage.getItem("shippingAddress")) : null
+
+const getPaymentMethodFromStorage = localStorage.getItem("paymentMethod") ? JSON.parse(localStorage.getItem("paymentMethod")) : null
+
+
+console.log("User Info from local storage");
 console.log(getUserInfoFromStorage);
+
 const defaultState = {
     cart: {
         cartItems: cartItemsFromLocalStorage,
-        userInfo: getUserInfoFromStorage
-    }
+        shippingAddress: getShippingAddressFromStorage,
+        paymentMethod: getPaymentMethodFromStorage
+    },
+    userLogin: { userInfo: getUserInfoFromStorage }
 }
 
 const middleware = [thunk]

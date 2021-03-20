@@ -6,23 +6,26 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { userLogin } from "../actions/UserActions";
 
+import Message from "../components/Message";
+import Loader from "../components/Loader"
+
 const LoginScreen = ({ location, history }) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [redirect, setRedirect] = useState("");
     const dispatch = useDispatch();
 
-    const redirec = history.search ? history.search.split("=")[1] : "/";
-    const { loading, userInfo, error } = useSelector(state => state.userLogin);
+    const redirect = location.search ? location.search.split("=")[1] : "/";
 
+    const { loading, userInfo, error } = useSelector(state => state.userLogin);
 
     useEffect(() => {
         if (userInfo) {
-            history.push(redirect);
+            history.push(`/${redirect}`);
         }
 
-    }, [redirect, userInfo])
+    }, [redirect, userInfo, userInfo]);
+
 
 
     const submitHandler = (e) => {
@@ -33,35 +36,50 @@ const LoginScreen = ({ location, history }) => {
     return (
         <FormContainer>
             <h1>Login</h1>
-            <Form onSubmit={submitHandler}>
-                <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email"
-                        placeholder="Please enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+            {
+                loading ? <Loader></Loader> :
+                    (
+                        <div>
+                            <Form onSubmit={submitHandler} className="py-3">
+                                <Form.Group controlId="email">
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control type="email"
+                                        placeholder="Please enter your email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
 
 
-                </Form.Group>
-                <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password"
-                        placeholder="Please enter your password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
+                                </Form.Group>
+                                <Form.Group controlId="password">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control type="password"
+                                        placeholder="Please enter your password"
+                                        required
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                    />
 
-                </Form.Group>
-                <Button type="submit" variant="primary">
-                    Sign In
+                                </Form.Group>
+                                <Button type="submit" variant="primary">
+                                    Sign In
                 </Button>
-            </Form>
-            <Row className="py-3">
-                <Col>
-                    You do not have account <Link to="/register">Register</Link>
-                </Col>
-            </Row>
+                            </Form>
+
+                            {error ?
+                                <Message variant="danger" >
+                                    <h3>{error} </h3>
+                                </Message> : ""}
+                            <Row className="py-3">
+                                <Col>
+                                    You do not have account <Link to="/register">Register</Link>
+                                </Col>
+                            </Row>
+                        </div>
+
+                    )
+            }
         </FormContainer>
     )
 }

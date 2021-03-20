@@ -1,9 +1,23 @@
 import React from 'react';
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+
+import { logout } from "../actions/UserActions";
+
 
 
 const Header = () => {
+
+    const { userInfo } = useSelector(state => state.userLogin);
+    const dispatch = useDispatch();
+
+    const logoutHandler = (e) => {
+        localStorage.removeItem("userInfo");
+        dispatch(logout())
+        console.log("Logout");
+    }
+
     return (
         <header>
             <Navbar bg="dark" expand="lg">
@@ -20,10 +34,26 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>
+                            {
+                                userInfo ?
+                                    <NavDropdown title={userInfo.name} id={userInfo.id}>
+                                        <LinkContainer to="/profile">
+                                            <NavDropdown.Item>
+                                                Profile
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
 
-                            <LinkContainer to="/login">
-                                <Nav.Link><i className="fas fa-user"></i>Sign In</Nav.Link>
-                            </LinkContainer>
+                                        <NavDropdown.Item onClick={logoutHandler}>
+                                            Logout
+                                        </NavDropdown.Item>
+
+
+                                    </NavDropdown> :
+                                    <LinkContainer to="/login">
+                                        <Nav.Link><i className="fas fa-user"></i>Sign In</Nav.Link>
+                                    </LinkContainer>
+                            }
+
 
 
                         </Nav>

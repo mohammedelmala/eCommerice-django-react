@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework import status
 
 from rest_framework.response import Response
-from base.serializers import MyTokenObtainPairSerializer, UserSerializer
+from base.serializers import MyTokenObtainPairSerializer, UserSerializer, UserSerializerWithToken
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -19,6 +19,25 @@ def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user,many=False)
     return Response(serializer.data)
+
+# get current user
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user
+    serializer = UserSerializerWithToken(user,many=False)
+
+    data = request.data
+    user.first_name = data['name']
+    user.username = data['name']
+    user.email = data['email']
+    if data['password']!='':
+        user.password = make_password(data['password'])
+    
+    user.save()
+    return Response(serializer.data)
+
+
 
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
@@ -35,7 +54,8 @@ def register(request):
         first_name=data["name"],
         username =data["email"],
         email = data["email"], 
-        password = make_password(data["password"])
+        password = make_password(data["password"]),
+        is_staff= True
         )
         serializar = UserSerializer(user,many=False)
         return  Response(serializar.data,status=status.HTTP_200_OK)

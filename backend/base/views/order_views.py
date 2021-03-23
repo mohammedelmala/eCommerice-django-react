@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import status
 
 from base.models import Order, ShippingAddress, OrderItem, Product
+from base.serializers import OrderSerializer
 
 
 @api_view(["POST"])
@@ -35,23 +36,26 @@ def addOrderItems(request):
         shippingPrice=data['shippingPrice']
 
         )
-
+      
 
         # (3) create order items
 
         for item in orderItems:
-            product = Product.objects.get(id=item.product)
+
+            product = Product.objects.get(_id=item['product'])
             orderItem = OrderItem.objects.create(
             product = product,
             user = user,
-            name = item.name,
-            qty = item.qty,
-            price = item.price,
-            image = item.image
+            order = order,
+            name = product.name,
+            qty = item['qty'],
+            price = item['price'],
+            image = item['image']
             )
-
-        # (4) update stock
-
-    
-
-    return Response("Order")
+             # (4) update stock
+            product.countInStock -= int(item['qty'])
+            product.save()
+        
+       
+    serializer = OrderSerializer(order,many=False)
+    return Response(serializer.data)

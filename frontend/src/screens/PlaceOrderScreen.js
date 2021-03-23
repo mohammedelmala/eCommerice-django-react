@@ -5,13 +5,18 @@ import { Link } from "react-router-dom";
 
 import { ListGroup, Row, Col, Image, Card, Button } from "react-bootstrap";
 
-
-
 import CheckoutStep from "../components/CheckoutStep";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+
+
+import { createOrder, resetOrder } from "../actions/orderActions";
 
 const PlaceOrderScreen = ({ history }) => {
+    const { success, order, error } = useSelector(state => state.createOrder);
 
     const cart = useSelector(state => state.cart);
+    const dispatch = useDispatch();
 
     cart.totalItems = cart.cartItems.reduce((acc, item) => acc = acc + item.qty * item.price, 0).toFixed(2);
     cart.shippingPrice = (cart.totalItems >= 100 ? 0 : 10).toFixed(2);
@@ -19,10 +24,36 @@ const PlaceOrderScreen = ({ history }) => {
     cart.totalPrice = (Number(cart.totalItems) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2);
 
 
+    useEffect(() => {
+        if (success) {
+            history.push(`order/${order._id}`);
+            dispatch(resetOrder());
+        }
+
+    }, [success, history, dispatch]);
+
+
     const placeOrder = (e) => {
+
         e.preventDefault();
         console.log("Place Order...");
+        dispatch(createOrder({
+            paymentMethod: cart.paymentMethod,
+            taxPrice: cart.taxPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress
+        }
+        ));
     }
+
+    if (!cart.paymentMethod) {
+        history.push('/payment');
+
+    }
+
+
 
     return (
         <div>
@@ -115,6 +146,14 @@ const PlaceOrderScreen = ({ history }) => {
                                 </Row>
                             </ListGroup.Item>
 
+                            {error && (
+                                <ListGroup.Item>
+                                    <Message variant="danger">
+                                        {error}
+                                    </Message>
+                                </ListGroup.Item>
+                            )}
+
                             <ListGroup.Item>
                                 <Button type="button"
                                     className="btn-block"
@@ -129,7 +168,7 @@ const PlaceOrderScreen = ({ history }) => {
                     </Card>
                 </Col>
             </Row>
-        </div>
+        </div >
     )
 }
 

@@ -3,6 +3,6 @@ from base.views import order_views
 
 
 urlpatterns=[
-    path('placeorder',order_views.addOrderItems,name="placeorder")
+    path('add/',order_views.addOrderItems,name="placeorder")
     
 ]

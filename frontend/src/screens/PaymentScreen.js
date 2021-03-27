@@ -25,7 +25,7 @@ const PaymentScreen = ({ history }) => {
         }
 
 
-    }, []);
+    }, [history, shippingAddress.address]);
 
 
     const submitHandler = (e) => {

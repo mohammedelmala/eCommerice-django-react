@@ -24,7 +24,7 @@ const LoginScreen = ({ location, history }) => {
             history.push(`/${redirect}`);
         }
 
-    }, [redirect, userInfo, userInfo]);
+    }, [redirect, userInfo, history]);
 
 
 

@@ -5,7 +5,7 @@ from rest_framework import status
 
 from base.models import Order, ShippingAddress, OrderItem, Product
 from base.serializers import OrderSerializer
-
+from datetime import datetime
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -14,6 +14,7 @@ def addOrderItems(request):
     data = request.data
 
     orderItems = data['orderItems']
+    validation = isOrderValid(data)
 
     if not orderItems or len(orderItems) ==0 :
         return Response({"detail":"No order items","status":status.HTTP_400_BAD_REQUEST})
@@ -36,7 +37,7 @@ def addOrderItems(request):
         shippingPrice=data['shippingPrice']
 
         )
-      
+    
 
         # (3) create order items
 
@@ -52,10 +53,71 @@ def addOrderItems(request):
             price = item['price'],
             image = item['image']
             )
-             # (4) update stock
+            # (4) update stock
             product.countInStock -= int(item['qty'])
             product.save()
+            
         
-       
-    serializer = OrderSerializer(order,many=False)
+        serializer = OrderSerializer(order,many=False)
+        return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def getOrderById(request,id):
+    try:
+        user = request.user
+        order = Order.objects.get(_id=id)
+        if order.user == user or user.is_staff:
+            serializer = OrderSerializer(order,many=False)
+            return Response(serializer.data)
+        else:
+           return Response({"detail":"Not Authorized to view this orders"},status=status.HTTP_400_BAD_REQUEST) 
+    except:
+        return Response({"detail":"Order does not exist"},status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def getOrders(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders,many=True)
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request,id):
+    order = Order.objects.get(_id=id)
+    order.isPaid = True
+    order.paidAt = datetime.now()
+
+    order.save()
+    return Response("Order paid")
+
+
+# def isOrderValid(data):
+#     print(type(data))
+#     order = dict(data)
+#     # orderItems = data['orderItems']
+#     # print(orderItems)
+
+#     # for item in orderItems:
+#     #     try:
+#     #         product = Product.objects.get(_id=item['product'])
+#     #         if product.countInStock < item['qty']:
+#     #             return f"Item ${product['product']} does not available now"
+#     #     except:
+#     #         return f"Invalid product ${item['product']}"
+    
+#     return "Y"
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def getMyOrders(request):
+    user = request.user
+    orders = user.order_set.all()
+    serializer = OrderSerializer(orders,many=True)
+    return Response(serializer.data)
+
+        

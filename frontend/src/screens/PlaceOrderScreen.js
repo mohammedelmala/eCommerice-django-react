@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
@@ -7,7 +7,6 @@ import { ListGroup, Row, Col, Image, Card, Button } from "react-bootstrap";
 
 import CheckoutStep from "../components/CheckoutStep";
 import Message from "../components/Message";
-import Loader from "../components/Loader";
 
 
 import { createOrder, resetOrder } from "../actions/orderActions";
@@ -30,7 +29,7 @@ const PlaceOrderScreen = ({ history }) => {
             dispatch(resetOrder());
         }
 
-    }, [success, history, dispatch]);
+    }, [success, history, dispatch, order._id]);
 
 
     const placeOrder = (e) => {

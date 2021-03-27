@@ -6,8 +6,6 @@ import { getDetails } from "../actions/UserActions";
 
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import FormContainer from "../components/FormContainer";
-
 
 
 const ProfileScreen = ({ history }) => {
@@ -50,7 +48,7 @@ const ProfileScreen = ({ history }) => {
 
     const submitHaandler = (e) => {
         e.preventDefault();
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             setMessage("Password dows not match confirmed password")
         }
         else {
@@ -81,7 +79,7 @@ const ProfileScreen = ({ history }) => {
                             onChange={(e) => setName(e.target.value)}
                         ></Form.Control>
                     </Form.Group>
-                    <Form.Group controlId="name">
+                    <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="email"
                             required
@@ -90,7 +88,7 @@ const ProfileScreen = ({ history }) => {
                             onChange={(e) => setEmail(e.target.value)}
                         ></Form.Control>
                     </Form.Group>
-                    <Form.Group controlId="name">
+                    <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password"
                             placeholder="Please enter your password"
@@ -99,7 +97,7 @@ const ProfileScreen = ({ history }) => {
                         ></Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="name">
+                    <Form.Group controlId="confirmPassword">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control type="password"
                             placeholder="Please enter your password confirmation"

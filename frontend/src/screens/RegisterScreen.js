@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 import Message from "../components/Message";
@@ -19,7 +19,7 @@ const RegisterScreen = (location, history) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const { loading, userInfo, error } = useSelector(state => state.userRegister);
+    const { loading, error } = useSelector(state => state.userRegister);
 
     const dispatch = useDispatch();
 
@@ -92,7 +92,7 @@ const RegisterScreen = (location, history) => {
 
             <Row className="py-3">
                 <Col>
-                    You have account return to <Link to={Redirect ? `\login?${redirect}` : '\login'}>Login</Link>
+                    You have account return to <Link to={Redirect ? `/login?${redirect}` : '/login'}>Login</Link>
                 </Col>
             </Row>
 

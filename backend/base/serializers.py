@@ -36,8 +36,23 @@ class OrderSerializer(serializers.ModelSerializer):
         return serializer.data
     
     def get_shippingAddress(self,obj):
+        
+
+        print("order id:",obj._id)
+        # print("shipping address:",obj.shippingAddress_set.all())
+        print("payment method:",obj.paymentMethod)
+        print("tax price:",obj.taxPrice)
+        print("shipping price:",obj.shippingPrice)
+        print("total price:",obj.totalPrice)
+        print("is paid:",obj.isPaid)
+        print("paid at:",obj.paidAt)
+        print("is delivered:",obj.isDelivered)
+        print("delivered at:",obj.deliveredAt)
+        print("created at:",obj.createdAt)
+
         try:
-            address = ShippingAddressSerializer(obj.shippingAddress, many=False).data
+            # address = ShippingAddressSerializer(obj.ShippingAddress(), many=False).data
+            address = True
 
         except:
             address =False

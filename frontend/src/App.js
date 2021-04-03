@@ -8,10 +8,15 @@ import Footer from "./components/Footer"
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
+
+import ProductListScreen from "./screens/ProductListScreen";
+
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import UserList from "./screens/UserListScreen";
+import UserEditScreen from "./screens/UserEditScreen";
+
 import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
@@ -31,11 +36,15 @@ const App = () => {
           <Route path="/products/:id" exact component={ProductScreen} />
           <Route path="/cart/:id?" component={CartScreen} />
           <Route path="/admin/userlist/" exact component={UserList} />
+          <Route path="/admin/:id/edit" exact component={UserEditScreen} />
 
+          <Route path="/admin/productlist" component={ProductListScreen} />
 
           <Route path="/shipping" component={ShippingScreen} />
           <Route path="/payment" component={PaymentScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
+
+
 
           <Route path="/order/:id" component={OrderScreen} />
 

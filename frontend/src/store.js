@@ -6,7 +6,10 @@ import {
     productsReducers,
     selectedProductReducer,
     productDeleteReducer,
-    productCreateReducer
+    productCreateReducer,
+    productUpdateReducer,
+    productCreateReviewReducer,
+    productTopRatedReducer
 } from "./reducers/ProductReducers";
 import { cartReducer } from "./reducers/CartReducer";
 
@@ -23,7 +26,9 @@ import {
     orderCreateReducer,
     orderDetailsReducer,
     orderPayReducer,
-    orderListMyReducer
+    orderDeliverReducer,
+    orderListMyReducer,
+    orderListReducer
 } from "./reducers/OrderReducers";
 
 const reducers = combineReducers({
@@ -31,6 +36,9 @@ const reducers = combineReducers({
     selectedProduct: selectedProductReducer,
     productDelete: productDeleteReducer,
     productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
+    productCreateReview: productCreateReviewReducer,
+    productTopRated: productTopRatedReducer,
 
     cart: cartReducer,
     userLogin: userLoginReducer,
@@ -38,13 +46,17 @@ const reducers = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userList: userListReducer,
+    userDelete: userDeleteReducer,
+    userUpdate: userUpdateReducer,
 
     createOrder: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
+    orderDeliver: orderDeliverReducer,
     orderListMy: orderListMyReducer,
-    userDelete: userDeleteReducer,
-    userUpdate: userUpdateReducer
+    orderList: orderListReducer,
+
+
 });
 
 const cartItemsFromLocalStorage = localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : []

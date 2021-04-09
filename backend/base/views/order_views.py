@@ -78,6 +78,7 @@ def getOrderById(request,id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminUser])
 def getOrders(request):
     orders = Order.objects.all()
     serializer = OrderSerializer(orders,many=True)
@@ -93,6 +94,16 @@ def updateOrderToPaid(request,id):
 
     order.save()
     return Response("Order paid")
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request,id):
+    order = Order.objects.get(_id=id)
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
+
+    order.save()
+    return Response("Order Delivered")
 
 
 # def isOrderValid(data):

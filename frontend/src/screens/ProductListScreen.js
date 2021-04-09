@@ -70,7 +70,7 @@ const ProductListScreen = ({ history }) => {
                                         <th>PRICE</th>
                                         <th>CATEGORY</th>
                                         <th>BRAND</th>
-                                        <th></th>
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -84,15 +84,14 @@ const ProductListScreen = ({ history }) => {
                                                 <td>{product.category}</td>
                                                 <td>{product.brand}</td>
                                                 <td>
-                                                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                                                        <Button variant="light" className="btn-sm">
+                                                    <LinkContainer to={`/admin/product/${product._id}/edit`} >
+                                                        <Button variant="light" className="btn-sm" >
                                                             <i className="fas fa-edit"></i>
                                                         </Button>
                                                     </LinkContainer>
 
-                                                </td>
-                                                <td>
-                                                    <Button variant="danger" className="btn-sm" onClick={(e) => deleteHandler(product)}>
+
+                                                    <Button variant="danger" className="btn-sm mx-3" onClick={(e) => deleteHandler(product)}>
                                                         <i className="fas fa-trash"></i>
                                                     </Button>
                                                 </td>

@@ -14,7 +14,7 @@ const Rating = ({ value, numOfReviews, color }) => {
 
     return (
         <div className="rating">
-            {rating} ({numOfReviews})
+            {rating} {numOfReviews && <>({numOfReviews})</>}
         </div>
     );
 }
